@@ -13,6 +13,8 @@ timeout 60
 
 @static
 fingerprint true
+ignore
+  tmp
 
 @create
 autocreate true
@@ -26,9 +28,6 @@ get /setup
 get /list/:listID
 
 @views
-
-@shared
-src src/shared
 
 @tables
 lists
