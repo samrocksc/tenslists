@@ -12,7 +12,6 @@ runtime deno
 timeout 60
 
 @static
-fingerprint true
 ignore
   tmp
 
