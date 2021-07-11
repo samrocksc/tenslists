@@ -13,8 +13,6 @@ timeout 60
 
 @static
 fingerprint true
-ignore
-  tmp
 
 @create
 autocreate true
