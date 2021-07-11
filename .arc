@@ -20,7 +20,6 @@ autocreate true
 @http
 get /
 get /create-list
-get /about
 post /submit-list
 get /browse
 get /setup
