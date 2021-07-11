@@ -1,9 +1,6 @@
 @app
 tenslists
 
-@sandbox-startup
-echo "hello"
-
 @aws
 profile default
 region us-west-1

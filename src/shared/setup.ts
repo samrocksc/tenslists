@@ -1,33 +1,33 @@
 import arc from 'https://raw.githubusercontent.com/architect/functions-deno/main/src/index.js';
+import { faker } from 'https://deno.land/x/deno_faker@v1.0.3/mod.ts';
+import { v4 } from 'https://deno.land/std@0.100.0/uuid/mod.ts';
+import TensList from './interfaces/tens-list.ts';
 
 export default async function () {
   const data = await arc.tables();
 
-  const body = {
+  const generateBody = (): TensList => ({
     formState: 'completed',
-    listID: 'xxx',
-    userID: 'xxx',
-    title: 'ted',
-    item1: 'item one',
-    item2: 'item one',
-    item3: 'item one',
-    item4: 'item one',
-    item5: 'item one',
-    item6: 'item one',
-    item7: 'item one',
-    item8: 'item eight',
-    item9: 'item nine',
-    item10: 'item ten',
-  };
-
-  await data.lists.put(body);
-  await data.lists.put({
-    ...body,
-    listID: 'xx1',
-    title: 'my favorite linux distros',
+    listID: v4.generate(),
+    userID: v4.generate(),
+    title: `My Favorite ${faker.lorem.word()}`,
+    item1: faker.lorem.sentence(),
+    item2: faker.lorem.sentence(),
+    item3: faker.lorem.sentence(),
+    item4: faker.lorem.sentence(),
+    item5: faker.lorem.sentence(),
+    item6: faker.lorem.sentence(),
+    item7: faker.lorem.sentence(),
+    item8: faker.lorem.sentence(),
+    item9: faker.lorem.sentence(),
+    item10: faker.lorem.sentence(),
   });
-  await data.lists.put({ ...body, listID: 'xx2', title: 'my favorite websites' });
-  await data.lists.put({ ...body, listID: 'xx3', title: 'my favorite teachers' });
+
+  await data.lists.put(generateBody());
+  await data.lists.put(generateBody());
+  await data.lists.put(generateBody());
+  await data.lists.put(generateBody());
+  await data.lists.put(generateBody());
 
   console.log('success');
   /* testing */

@@ -15,4 +15,5 @@ export default interface TensList {
   item7: String;
   item8: String;
   item9: String;
+  item10: String;
 }
