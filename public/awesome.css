@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&display=swap');
 
 body {
-  font-family: "Comic Neue", cursive;
+  font-family: 'Comic Neue', cursive;
 }
 
 .parent {
@@ -20,23 +20,25 @@ footer {
   grid-area: 3 / 2 / 3 / 2;
   place-self: end center;
   padding: 20px;
-  font-size: 5vw;
+  font-size: 3vh;
 }
 
 .header {
   background-color: fuchsia;
-  font-family: "Comic Neue", cursive;
+  font-family: 'Comic Neue', cursive;
   font-weight: 500;
   /* we set up fallback font-size */
   font-size: 3.5em;
   font-size: 7vw;
   box-shadow: 10px 5px 0px 0px;
   padding: 3px;
+  text-align: center;
 }
 
 .description {
   padding: 20px;
   font-size: 2vw;
+  text-align: center;
 }
 
 .link-container {
@@ -58,29 +60,13 @@ footer {
   box-shadow: 10px 5px 0px 0px greenyellow;
 }
 
-.item-text {
-  margin: 5px;
-  padding: 5px;
-  font-size: 2vw;
-  text-align: right;
-  margin-right: 4vw;
+.list-form {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
 }
 
-.item-text > input {
-  box-shadow: 10px 5px 0px 0px;
-  width: 60vh;
-  height: 3vh;
-  font-size: 2vw;
-  margin-left: 20px;
-}
-
-.item-text > label {
-  font-size: 2vw;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.list-form > button {
+.list-form button {
   font-size: 4vw;
   box-shadow: 10px 5px 0px 0px;
   background-color: greenyellow;
@@ -88,6 +74,48 @@ footer {
   padding: 2px;
   color: black;
   text-decoration: none;
+}
+
+.item-text {
+  font-size: 2vw;
+  text-align: left;
+  margin-right: 4vw;
+}
+
+.item-text > input {
+  box-shadow: 10px 5px 0px 0px;
+  width: 60vh;
+  height: 2vh;
+  font-size: 2vh;
+}
+
+.item-text > label {
+  font-size: 1.5vh;
+  font-weight: bold;
+}
+
+.text-input {
+  display: block;
+}
+
+.green-body {
+  background-color: greenyellow;
+  box-shadow: 10px 5px 0px 0px;
+  min-height: 50vw;
+}
+
+ul.list-list {
+  font-size: 2vw;
+}
+
+ul.list-list > li {
+  list-style-type: none;
+}
+
+ul.list-list > li > a {
+  color: OrangeRed;
+  text-decoration: none;
+  font-weight: 600;
 }
 
 @media only screen and (min-width: 600px) {
