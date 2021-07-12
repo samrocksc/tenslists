@@ -1,8 +1,8 @@
 import { html } from 'https://deno.land/x/html@v1.2.0/mod.ts';
-import { footer } from './footer.js';
+import { footer } from './footer.ts';
 
 // learn more about HTTP functions here: https://arc.codes/primitives/http
-export function layout(body) {
+export function layout(body: any) {
   return html`
     <!DOCTYPE html>
     <html>
