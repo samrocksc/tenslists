@@ -8,11 +8,6 @@ region us-west-1
 runtime deno
 timeout 60
 
-@static
-fingerprint true
-ignore
-  tmp
-
 @create
 autocreate true
 
