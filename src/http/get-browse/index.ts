@@ -1,9 +1,11 @@
+import { html } from 'https://deno.land/x/html@v1.2.0/mod.ts';
 import arc from 'https://raw.githubusercontent.com/architect/functions-deno/main/src/index.js';
-import { base } from './render-views.ts';
+
+import { layout } from './vendor/views/layout.js';
 import TensList from './vendor/shared/interfaces/tens-list.ts';
 
 // learn more about HTTP functions here: https://arc.codes/primitives/http
-export async function handler(event: object) {
+export async function handler() {
   const data = await arc.tables();
 
   const lists = await data.lists.query({
@@ -14,17 +16,37 @@ export async function handler(event: object) {
     },
   });
 
-  const listItems = cleanUp(lists.Items) as unknown as TensList[];
+  const listItems = (cleanUp(lists.Items) as unknown) as TensList[];
 
   return {
     statusCode: 200,
     headers: {
-      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
       'content-type': 'text/html; charset=utf8',
     },
     body: base(listItems),
   };
 }
+
+export function base(lists: TensList[]) {
+  const stringed = generateLists(lists);
+  const content = html`
+    <div class="header">Browse Other Lists!</div>
+    <div class="description">below is a list of lists!</div>
+    <div class="green-body">
+      <ul class="list-list">
+        ${stringed}
+      </ul>
+    </div>
+  `;
+  return layout(content);
+}
+
+const generateLists = (lists: any[]) =>
+  lists
+    .map(
+      (list) => html`<li><a href="/list?id=${list.listID}">${list.title}</a></li> `,
+    )
+    .join('');
 
 const cleanUp = (items: any) => items.map((item: any) => extractData(item));
 
@@ -37,4 +59,3 @@ const extractData = (input: any) => {
     };
   }, {});
 };
-

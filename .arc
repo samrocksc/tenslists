@@ -9,6 +9,7 @@ runtime deno
 timeout 60
 
 @static
+fingerprint true
 ignore
   tmp
 
@@ -21,7 +22,7 @@ get /create-list
 post /submit-list
 get /browse
 get /setup
-get /list/:listID
+get /list
 
 @views
 
