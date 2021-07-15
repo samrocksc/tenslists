@@ -1,4 +1,4 @@
-import { html } from 'https://deno.land/x/html@v1.2.0/mod.ts';
+import { html } from 'https://raw.githubusercontent.com/denomod/deno_html/v1.2.0/mod.ts';
 
 // learn more about HTTP functions here: https://arc.codes/primitives/http
 export function footer() {

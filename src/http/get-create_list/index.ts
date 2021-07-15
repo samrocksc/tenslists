@@ -1,7 +1,7 @@
 import { create } from './vendor/views/create.ts';
 
 // learn more about HTTP functions here: https://arc.codes/primitives/http
-export async function handler(_req) {
+export async function handler(_req: any) {
   return {
     statusCode: 200,
     headers: {

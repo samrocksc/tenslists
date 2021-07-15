@@ -1,4 +1,4 @@
-import { html } from 'https://deno.land/x/html@v1.2.0/mod.ts';
+import { html } from 'https://raw.githubusercontent.com/denomod/deno_html/v1.2.0/mod.ts';
 import arc from 'https://raw.githubusercontent.com/architect/functions-deno/main/src/index.js';
 
 import TensList from './vendor/shared/interfaces/tens-list.ts';

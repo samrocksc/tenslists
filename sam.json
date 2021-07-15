@@ -1,0 +1,912 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "Exported by architect/package@6.2.2 on 2021-07-12T10:24:55.880Z",
+  "Resources": {
+    "HTTP": {
+      "Type": "AWS::Serverless::HttpApi",
+      "Properties": {
+        "StageName": "$default",
+        "DefinitionBody": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          "paths": {
+            "/": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIndexHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/about": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAboutHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/about-gdpr": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAboutGdprHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/create-list": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCreateListHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/submit-list": {
+              "post": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PostSubmitListHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/browse": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetBrowseHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/setup": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetSetupHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/list": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetListHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/_static/{proxy+}": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "1.0",
+                  "type": "http_proxy",
+                  "httpMethod": "GET",
+                  "uri": {
+                    "Fn::Sub": [
+                      "http://${bukkit}.s3.${AWS::Region}.amazonaws.com/{proxy}",
+                      {
+                        "bukkit": {
+                          "Ref": "StaticBucket"
+                        }
+                      }
+                    ]
+                  },
+                  "connectionType": "INTERNET",
+                  "timeoutInMillis": 30000
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetIndexHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/get-index",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 60,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetIndexHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "ReservedConcurrentExecutions": 1,
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "GetAboutHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/get-about",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 60,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetAboutHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/about",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "GetAboutGdprHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/get-about_gdpr",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 60,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetAboutGdprHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/about-gdpr",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "GetCreateListHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/get-create_list",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetCreateListHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/create-list",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "ReservedConcurrentExecutions": 1,
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "PostSubmitListHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/post-submit_list",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 60,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "PostSubmitListHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/submit-list",
+              "Method": "POST",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "GetBrowseHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/get-browse",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 60,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetBrowseHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/browse",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "GetSetupHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/get-setup",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 60,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetSetupHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/setup",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "GetListHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/home/sam/GitHub/personal/tenslists/src/http/get-list",
+        "Runtime": "provided",
+        "MemorySize": 1152,
+        "Timeout": 60,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "tenslists",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetListHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/list",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        },
+        "Layers": [
+          {
+            "Fn::GetAtt": [
+              "Deno",
+              "Outputs.DenoRuntimeArn"
+            ]
+          }
+        ]
+      }
+    },
+    "ListsTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "KeySchema": [
+          {
+            "AttributeName": "listID",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "listID",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "formState",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "byFormState",
+            "KeySchema": [
+              {
+                "AttributeName": "formState",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "listID",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ]
+      }
+    },
+    "StaticBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "PublicRead",
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html",
+          "ErrorDocument": "404.html"
+        }
+      }
+    },
+    "Role": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "ArcGlobalPolicy",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                    "logs:DescribeLogStreams"
+                  ],
+                  "Resource": "arn:aws:logs:*:*:*"
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName": "ArcStaticBucketPolicy",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:PutObjectAcl",
+                    "s3:DeleteObject"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:s3:::${bukkit}",
+                        {
+                          "bukkit": {
+                            "Ref": "StaticBucket"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:s3:::${bukkit}/*",
+                        {
+                          "bukkit": {
+                            "Ref": "StaticBucket"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName": "ArcDynamoPolicy",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:GetItem",
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:DescribeStream",
+                    "dynamodb:ListStreams"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+                        {
+                          "tablename": {
+                            "Ref": "ListsTable"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+                        {
+                          "tablename": {
+                            "Ref": "ListsTable"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/stream/*",
+                        {
+                          "tablename": {
+                            "Ref": "ListsTable"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "ListsParam": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Name": {
+          "Fn::Sub": [
+            "/${AWS::StackName}/tables/${tablename}",
+            {
+              "tablename": "lists"
+            }
+          ]
+        },
+        "Value": {
+          "Ref": "ListsTable"
+        }
+      }
+    },
+    "StaticBucketParam": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Name": {
+          "Fn::Sub": [
+            "/${AWS::StackName}/static/${key}",
+            {
+              "key": "bucket"
+            }
+          ]
+        },
+        "Value": {
+          "Ref": "StaticBucket"
+        }
+      }
+    },
+    "StaticFingerprintParam": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Name": {
+          "Fn::Sub": [
+            "/${AWS::StackName}/static/${key}",
+            {
+              "key": "fingerprint"
+            }
+          ]
+        },
+        "Value": "false"
+      }
+    },
+    "ParameterStorePolicy": {
+      "Type": "AWS::IAM::Policy",
+      "DependsOn": "Role",
+      "Properties": {
+        "PolicyName": "ArcParameterStorePolicy",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "ssm:GetParametersByPath",
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}",
+                  {}
+                ]
+              }
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "Role"
+          }
+        ]
+      }
+    },
+    "Deno": {
+      "Type": "AWS::Serverless::Application",
+      "Properties": {
+        "Location": {
+          "ApplicationId": "arn:aws:serverlessrepo:us-east-1:455488262213:applications/Deno",
+          "SemanticVersion": "0.26.0"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "API": {
+      "Description": "API Gateway (HTTP)",
+      "Value": {
+        "Fn::Sub": [
+          "https://${ApiId}.execute-api.${AWS::Region}.amazonaws.com",
+          {
+            "ApiId": {
+              "Ref": "HTTP"
+            }
+          }
+        ]
+      }
+    },
+    "ApiId": {
+      "Description": "API ID (ApiId)",
+      "Value": {
+        "Ref": "HTTP"
+      }
+    },
+    "BucketURL": {
+      "Description": "Bucket URL",
+      "Value": {
+        "Fn::Sub": [
+          "http://${bukkit}.s3-website-${AWS::Region}.amazonaws.com",
+          {
+            "bukkit": {
+              "Ref": "StaticBucket"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -13,7 +13,6 @@ autocreate true
 
 @http
 get /
-get /about
 get /create-list
 post /submit-list
 get /browse
